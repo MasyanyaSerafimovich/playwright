@@ -2,20 +2,10 @@ const playwright = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
 
+const credentials = require('../config').credentials
+const selectors = require('../pageObject/loginPage').selectors
+
 let page, browser, context
-
-const selectors = {
-  login: 'input[name=email]',
-  password: 'input[name=password]',
-  loginCheckBox: '[name=loveForm]',
-  loginBtn: '[type=submit]',
-  h1Position: '.container h1'
-}
-
-const credentials = {
-  login: 'complex@authenticationtest.com',
-  password: 'pa$$w0rd'
-}
 
 describe('Login page', () => {
   beforeEach(async function() {
