@@ -1,9 +1,9 @@
 const playwright = require('playwright');
 const chai = require('chai')
 const expect = chai.expect
-
 const credentials = require('../config').credentials
 const selectors = require('../pageObject/loginPage').selectors
+const loginUrl = require('../pageObject/loginPage').loginUrl
 
 let page, browser, context
 
@@ -16,7 +16,7 @@ describe('Login page', () => {
     });
       
     context = await browser.newContext()
-    page = await context.newPage('https://authenticationtest.com/complexAuth/')
+    page = await context.newPage(loginUrl)
   })
 
   afterEach(async function() {
@@ -27,7 +27,7 @@ describe('Login page', () => {
   it('should exists', async() => {
 
     // Go to authentication form
-    await page.goto('https://authenticationtest.com/complexAuth/');
+    await page.goto(loginUrl);
     
     const title = await page.locator(selectors.h1Position).textContent();
     expect(title).to.equal('Complex Form Authentication')
@@ -35,7 +35,7 @@ describe('Login page', () => {
 
   it(`should not login, if selector option Don't Log Me In chosen`, async() => {
 
-    await page.goto('https://authenticationtest.com/complexAuth/');
+    await page.goto(loginUrl);
     await page.locator(selectors.login).fill(credentials.login);
     await page.locator(selectors.password).fill(credentials.password);
 
@@ -52,10 +52,10 @@ describe('Login page', () => {
 
   it(`should not login, if checkbox do not selected`, async() => {
 
-    await page.goto('https://authenticationtest.com/complexAuth/');
+    await page.goto(loginUrl);
     await page.locator(selectors.login).fill(credentials.login);
     await page.locator(selectors.password).fill(credentials.password);
-    await page.selectOption('[name="selectLogin"]', 'yes');
+    await page.selectOption(selectors.loginSelect, 'yes');
 
     // Checkbox do not selected
     await page.click(selectors.loginBtn);
@@ -67,12 +67,12 @@ describe('Login page', () => {
 
   it(`should not login, if selector option Don't Log Me In chosen AND checkbox do not selected`, async() => {
 
-    await page.goto('https://authenticationtest.com/complexAuth/');
+    await page.goto(loginUrl);
     await page.locator(selectors.login).fill(credentials.login);
     await page.locator(selectors.password).fill(credentials.password);
 
     // Select option "Don't Log Me In"
-    await page.selectOption('[name="selectLogin"]', 'no');
+    await page.selectOption(selectors.loginSelect, 'no');
 
     // Checkbox do not selected
     await page.click(selectors.loginBtn);
@@ -84,10 +84,10 @@ describe('Login page', () => {
 
   it('should successfully login and redirect to main page', async() => {
 
-    await page.goto('https://authenticationtest.com/complexAuth/');
+    await page.goto(loginUrl);
     await page.locator(selectors.login).fill(credentials.login);
     await page.locator(selectors.password).fill(credentials.password);
-    await page.selectOption('[name="selectLogin"]', 'yes');
+    await page.selectOption(selectors.loginSelect, 'yes');
     await page.click(selectors.loginCheckBox);
     await page.click(selectors.loginBtn);
     await page.waitForLoadState('networkidle');
