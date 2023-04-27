@@ -3,9 +3,8 @@
   "description": "Playwrigth example",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
-    "test": "mocha ./src/*.e2e.spec.js --timeout 30000"
+    "test": "mocha ./test/*.e2e.spec.js --timeout 30000"
   },
   "repository": {
     "type": "git",
@@ -21,6 +20,6 @@
   "dependencies": {
     "chai": "^4.3.6",
     "mocha": "^10.0.0",
-    "playwright": "^1.25.1"
+    "playwright": "^1.32.3"
   }
 }
